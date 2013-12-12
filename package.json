@@ -1,0 +1,20 @@
+{
+  "name": "mtime",
+  "version": "0.1.0",
+  "description": "Returns the last moditication date for a given path.",
+  "main": "mtime.js",
+  "scripts": {
+    "test": "mocha -u tdd -R spec"
+  },
+  "keywords": [
+    "mtime"
+  ],
+  "author": "Simon Ljungberg <hi@iamsim.me>",
+  "license": "MIT",
+  "devDependencies": {
+    "touch": "0.0.2",
+    "mkdirp": "~0.3.5",
+    "rimraf": "~2.2.5"
+  }
+}
+
