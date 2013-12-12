@@ -1,6 +1,6 @@
 {
   "name": "mtime",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Returns the last moditication date for a given path.",
   "main": "mtime.js",
   "scripts": {
