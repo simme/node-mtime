@@ -40,7 +40,7 @@ suite('mtime', function () {
   // Delete test files
   teardown(function () {
     try {
-      //rimraf.sync('/tmp/_mtime');
+      rimraf.sync('/tmp/_mtime');
     }
     catch (e) {
       console.log('\t**Failed to delete test files.**');
@@ -49,20 +49,20 @@ suite('mtime', function () {
   });
 
   test('Sync mtime works', function () {
-    var t = mtime('/tmp/_mtime');
+    var t = mtime.sync('/tmp/_mtime');
     var x = m('/tmp/_mtime');
     assert.equal(t, x);
 
-    t = mtime('/tmp/_mtime/foo/1');
+    t = mtime.sync('/tmp/_mtime/foo/1');
     x = m('/tmp/_mtime/foo/1');
     assert.equal(t, x);
   });
 
   test('Recursive sync mtime works', function () {
-    var t = mtime('/tmp/_mtime', true);
+    var t = mtime.sync('/tmp/_mtime', true);
     var x = m('/tmp/_mtime/bar/baz/3');
 
-    t = mtime('/tmp/_mtime/foo', true);
+    t = mtime.sync('/tmp/_mtime/foo', true);
     x = m('/tmp/_mtime/foo/3');
   });
 

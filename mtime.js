@@ -16,44 +16,11 @@
 var fs   = require('fs');
 var join = require('path').join;
 
-module.exports = function (path, recursive, fn) {
-  var sync = true;
-  if (arguments.length === 2) {
-    if (typeof recursive === 'function') {
-      sync = false;
-      fn = recursive;
-      recursive = false;
-    }
+module.exports = function mtimeAsync(path, recursive, fn) {
+  if (typeof recursive === 'function') {
+    fn = recursive;
+    recursive = false;
   }
-  else if (arguments.length === 3) {
-    sync = false;
-  }
-
-  return sync ? mtimeSync(path, recursive) : mtimeAsync(path, recursive, fn);
-};
-
-function mtimeSync(path, recursive) {
-  var exists = fs.existsSync(path);
-  if (!exists) {
-    throw new Error('Path: ' + path + ' not found');
-  }
-
-  var stat = fs.statSync(path);
-  if (stat.isFile() || stat.isDirectory() && !recursive) {
-    return stat.mtime.getTime();
-  }
-
-  var files = fs.readdirSync(path);
-  var mtime = stat.mtime.getTime();
-  files.forEach(function (file) {
-    var time = mtimeSync(join(path, file), true);
-    mtime = Math.max(mtime, time);
-  });
-
-  return mtime;
-}
-
-function mtimeAsync(path, recursive, fn) {
   fs.exists(path, function (exists) {
     if (!exists) {
       fn(new Error('Path: ' + path + ' not found'));
@@ -94,5 +61,27 @@ function mtimeAsync(path, recursive, fn) {
       });
     });
   });
-}
+};
+
+
+module.exports.sync = function mtimeSync(path, recursive) {
+  var exists = fs.existsSync(path);
+  if (!exists) {
+    throw new Error('Path: ' + path + ' not found');
+  }
+
+  var stat = fs.statSync(path);
+  if (stat.isFile() || stat.isDirectory() && !recursive) {
+    return stat.mtime.getTime();
+  }
+
+  var files = fs.readdirSync(path);
+  var mtime = stat.mtime.getTime();
+  files.forEach(function (file) {
+    var time = mtimeSync(join(path, file), true);
+    mtime = Math.max(mtime, time);
+  });
+
+  return mtime;
+};
 
