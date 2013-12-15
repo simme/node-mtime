@@ -83,5 +83,18 @@ suite('mtime', function () {
       done();
     });
   });
+
+  test('Checking mtime on an non-existing file throws', function () {
+    assert.throws(function () {
+      mtime.sync('foobazbarbeepbopp');
+    });
+  });
+
+  test('Async checking mtime on an non-existing file gives error', function (done) {
+    mtime('foobazbarbeepbopp', function (err) {
+      assert(err);
+      done();
+    });
+  });
 });
 
